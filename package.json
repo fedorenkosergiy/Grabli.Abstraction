@@ -6,8 +6,9 @@
   "unity": "2020.3",
   "unityRelease": "23f1",
   "dependencies": {
- },
- "keywords": [
+    "fedorenkosergiy.grabli.editorconfig": "0.0.3"
+  },
+  "keywords": [
     "Abstraction",
     "Grabli",
     "UnityEngine"
