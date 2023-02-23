@@ -1,0 +1,20 @@
+{
+  "name": "fedorenkosergiy.grabli.abstraction",
+  "version": "0.0.0",
+  "displayName": "Grabli Abstraction",
+  "description": "Types that are used as a basis for different packages compatibility",
+  "unity": "2020.3",
+  "unityRelease": "23f1",
+  "dependencies": {
+ },
+ "keywords": [
+    "Abstraction",
+    "Grabli",
+    "UnityEngine"
+  ],
+  "author": {
+    "name": "Serhii Fedorenko",
+    "email": "fedorenkosergiy@gmail.com",
+    "url": "https://example.com"
+  }
+}
