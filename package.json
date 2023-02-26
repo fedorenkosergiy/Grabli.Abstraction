@@ -5,9 +5,6 @@
   "description": "Types that are used as a basis for different packages compatibility",
   "unity": "2020.3",
   "unityRelease": "23f1",
-  "dependencies": {
-    "fedorenkosergiy.grabli.editorconfig": "0.0.3"
-  },
   "keywords": [
     "Abstraction",
     "Grabli",
