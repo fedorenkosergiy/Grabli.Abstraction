@@ -3,8 +3,8 @@ using JetBrains.Annotations;
 namespace Grabli.Abstraction
 {
 	[PublicAPI]
-	public interface Updatable
+	public interface UpdateCallbackReceiver<in T>
 	{
-		void Update();
+		void OnUpdate(T delta);
 	}
 }
