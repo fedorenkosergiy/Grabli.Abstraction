@@ -3,8 +3,9 @@ using JetBrains.Annotations;
 namespace Grabli.Abstraction
 {
 	[PublicAPI]
-	public interface Getter<out T>
+	public interface Getter<T>
 	{
-		T Get();
+		void Get(out T result);
+		bool TryGet(out T result);
 	}
 }
