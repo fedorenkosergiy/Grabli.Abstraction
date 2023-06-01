@@ -1,6 +1,6 @@
 namespace Grabli.Abstraction
 {
-	public interface Identifiable<out T>
+	public interface IdentifiableReadonly<out T>
 	{
 		T GetId();
 	}

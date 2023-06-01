@@ -1,6 +1,6 @@
 namespace Grabli.Abstraction
 {
-	public interface Orderable<out T>
+	public interface OrderableReadonly<out T>
 	{
 		T GetOrder();
 	}
