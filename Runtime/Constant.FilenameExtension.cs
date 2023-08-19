@@ -12,6 +12,7 @@ namespace Grabli.Abstraction
 			public const string Tmp = "tmp";
 			public const string Bak = "bak";
 			public const string Cs = "cs";
+			public const string Db = "db";
 
 			[PublicAPI]
 			public static class Dot
@@ -21,6 +22,7 @@ namespace Grabli.Abstraction
 				public const string Tmp = "." + FileExtension.Tmp;
 				public const string Bak = "." + FileExtension.Bak;
 				public const string Cs = "." + FileExtension.Cs;
+				public const string Db = "." + FileExtension.Db;
 			}
 
 			[PublicAPI]
@@ -31,6 +33,7 @@ namespace Grabli.Abstraction
 				public const string Tmp = "*" + FileExtension.Tmp;
 				public const string Bak = "*" + FileExtension.Bak;
 				public const string Cs = "*" + FileExtension.Cs;
+				public const string Db = "*" + FileExtension.Db;
 
 				[PublicAPI]
 				public static class Dot
@@ -40,6 +43,7 @@ namespace Grabli.Abstraction
 					public const string Tmp = "*" + FileExtension.Dot.Tmp;
 					public const string Bak = "*" + FileExtension.Dot.Bak;
 					public const string Cs = "*" + FileExtension.Dot.Cs;
+					public const string Db = "*" + FileExtension.Dot.Db;
 				}
 			}
 		}
