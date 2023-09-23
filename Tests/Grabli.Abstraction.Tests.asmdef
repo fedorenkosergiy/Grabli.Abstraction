@@ -1,0 +1,20 @@
+{
+    "name": "Grabli.Abstraction.Tests",
+    "rootNamespace": "Grabli.Abstraction.Tests",
+    "references": [
+        "GUID:43b243fe22fde4214a059b41a612313d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
