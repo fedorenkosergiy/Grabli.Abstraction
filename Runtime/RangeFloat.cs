@@ -1,31 +1,32 @@
 using JetBrains.Annotations;
+using System;
 using static System.Math;
 
 namespace Grabli.Abstraction
 {
-	[PublicAPI]
+	[PublicAPI][Serializable]
 	public partial struct RangeFloat
 	{
-		public float Start;
-		public float Length;
-		public EdgeInclusion Edges;
+		public float start;
+		public float length;
+		public EdgeInclusion edges;
 
-		public bool IncludesStart => (Edges & EdgeInclusion.Start) == EdgeInclusion.Start;
+		public bool IncludesStart => (edges & EdgeInclusion.Start) == EdgeInclusion.Start;
 
-		public bool IncludesEnd => (Edges & EdgeInclusion.End) == EdgeInclusion.End;
+		public bool IncludesEnd => (edges & EdgeInclusion.End) == EdgeInclusion.End;
 
-		public float End => Start + Length;
+		public float End => start + length;
 
 		public RangeFloat(float start, float length, EdgeInclusion edges)
 		{
-			Start = start;
-			Length = length;
-			Edges = edges;
+			this.start = start;
+			this.length = length;
+			this.edges = edges;
 		}
 
 		public bool Includes(float value)
 		{
-			return Length switch
+			return length switch
 			{
 			> 0.0f => IncludesInCaseOfPositiveLength(value),
 			< 0.0f => IncludesInCaseOfNegativeLength(value),
@@ -37,14 +38,14 @@ namespace Grabli.Abstraction
 		{
 			if (EqualsToOneOfEdges(value, out bool includes)) return includes;
 
-			return !(value < End) && !(Start < value);
+			return !(value < End) && !(start < value);
 		}
 
 		private bool EqualsToOneOfEdges(float value, out bool includes)
 		{
 			includes = IncludesStart;
 
-			if (Abs(value - Start) <= float.Epsilon) return true;
+			if (Abs(value - start) <= float.Epsilon) return true;
 
 			includes = IncludesEnd;
 
@@ -55,7 +56,7 @@ namespace Grabli.Abstraction
 		{
 			if (EqualsToOneOfEdges(value, out bool includes)) return includes;
 
-			return !(value < Start) && !(End < value);
+			return !(value < start) && !(End < value);
 		}
 	}
 }
