@@ -25,7 +25,7 @@ namespace Grabli.Abstraction
 		/// -1 means that the listener wasn't added
 		/// </para>
 		/// </returns>
-		/// <exception cref="NullReferenceException">
+		/// <exception cref="ArgumentNullException">
 		/// if listener == null
 		/// </exception>
 		int AddListener([NotNull] T listener);
@@ -42,7 +42,7 @@ namespace Grabli.Abstraction
 		/// false if the listener was not found among added listeners or it has been already removed
 		/// </para>
 		/// </returns>
-		/// <exception cref="NullReferenceException">
+		/// <exception cref="ArgumentNullException">
 		/// if listener == null
 		/// </exception>
 		bool RemoveListener([NotNull] T listener);
