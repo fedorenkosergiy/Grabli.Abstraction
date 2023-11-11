@@ -1,62 +1,47 @@
 using JetBrains.Annotations;
 using System;
-using static System.Math;
+using System.Diagnostics;
 
 namespace Grabli.Abstraction
 {
-	[PublicAPI][Serializable]
+	[PublicAPI]
+	[Serializable]
+	[DebuggerDisplay("{" + nameof(Min) + "};{" + nameof(Max) + "}")]
 	public partial struct RangeFloat
 	{
-		public float start;
-		public float length;
-		public EdgeInclusion edges;
+		public RangeFloatOpen start;
+		public RangeFloatOpen end;
 
-		public bool IncludesStart => (edges & EdgeInclusion.Start) == EdgeInclusion.Start;
+		public float Length => end.point.x - start.point.x;
 
-		public bool IncludesEnd => (edges & EdgeInclusion.End) == EdgeInclusion.End;
+		public RangeFloatOpen Min => Length > 0.0f ? start : end;
 
-		public float End => start + length;
+		public RangeFloatOpen Max => Length > 0.0f ? end : start;
 
 		public RangeFloat(float start, float length, EdgeInclusion edges)
 		{
-			this.start = start;
-			this.length = length;
-			this.edges = edges;
+			bool startDirection = length > 0.0f;
+
+			this.start =
+			new RangeFloatOpen(start, startDirection, (edges & EdgeInclusion.Start) == EdgeInclusion.Start);
+
+			end = new RangeFloatOpen(start + length, !startDirection, (edges & EdgeInclusion.End) == EdgeInclusion.End);
 		}
 
-		public bool Includes(float value)
-		{
-			return length switch
-			{
-			> 0.0f => IncludesInCaseOfPositiveLength(value),
-			< 0.0f => IncludesInCaseOfNegativeLength(value),
-			_ => EqualsToOneOfEdges(value, out bool includes) && includes
-			};
-		}
+		public bool Includes(float value) => start.Includes(value) && end.Includes(value);
 
-		private bool IncludesInCaseOfNegativeLength(float value)
-		{
-			if (EqualsToOneOfEdges(value, out bool includes)) return includes;
 
-			return !(value < End) && !(start < value);
-		}
+		public bool Includes(RangeFloat value) => start.Includes(value.start) && end.Includes(value.end);
 
-		private bool EqualsToOneOfEdges(float value, out bool includes)
-		{
-			includes = IncludesStart;
 
-			if (Abs(value - start) <= float.Epsilon) return true;
+		public bool Equals(RangeFloat other) => start.Equals(other.start) && end.Equals(other.end);
 
-			includes = IncludesEnd;
+		public override bool Equals(object obj) => obj is RangeFloat other && Equals(other);
 
-			return Abs(value - End) <= float.Epsilon;
-		}
+		public override int GetHashCode() => HashCode.Combine(start, end);
 
-		private bool IncludesInCaseOfPositiveLength(float value)
-		{
-			if (EqualsToOneOfEdges(value, out bool includes)) return includes;
+		public static bool operator ==(RangeFloat a, RangeFloat b) { return a.start == b.start && a.end == b.end; }
 
-			return !(value < start) && !(End < value);
-		}
+		public static bool operator !=(RangeFloat a, RangeFloat b) { return !(a == b); }
 	}
 }
