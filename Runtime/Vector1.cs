@@ -1,5 +1,5 @@
 using System;
-using static System.Math;
+using static UnityEngine.Mathf;
 
 namespace Grabli.Abstraction
 {
@@ -21,10 +21,7 @@ namespace Grabli.Abstraction
 
 		public override int GetHashCode() => HashCode.Combine(x, direction);
 
-		public static bool operator ==(Vector1 a, Vector1 b)
-		{
-			return Abs(a.x - b.x) < float.Epsilon && a.direction == b.direction;
-		}
+		public static bool operator ==(Vector1 a, Vector1 b) => Approximately(a.x, b.x) && a.direction == b.direction;
 
 		public static bool operator !=(Vector1 a, Vector1 b) { return !(a == b); }
 
