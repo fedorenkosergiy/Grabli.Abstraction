@@ -19,22 +19,30 @@ namespace Grabli.Abstraction
 
 		public RangeFloatOpen Max => Length > 0.0f ? end : start;
 
-		public RangeFloat(float start, float length, EdgeInclusion edges)
+		public bool IsClosed => Min.Includes(Max.point.x) && Max.Includes(Min.point.x);
+
+		public RangeFloat(Vector2 startAndEnd) : this(startAndEnd, EdgeInclusion.Both) { }
+
+		public RangeFloat(Vector2 startAndEnd, EdgeInclusion edges) : this(startAndEnd.x,
+																		   startAndEnd.y - startAndEnd.x,
+																		   edges) { }
+
+		public RangeFloat(float start, float length, EdgeInclusion edges) :
+		this(new RangeFloatOpen(start, length >= 0.0f, (edges & EdgeInclusion.Start) == EdgeInclusion.Start),
+			 new RangeFloatOpen(start + length, length < 0.0f, (edges & EdgeInclusion.End) == EdgeInclusion.End)) { }
+
+
+		public RangeFloat(RangeFloatOpen start, RangeFloatOpen end)
 		{
-			bool startDirection = length > 0.0f;
-
-			this.start =
-			new RangeFloatOpen(start, startDirection, (edges & EdgeInclusion.Start) == EdgeInclusion.Start);
-
-			end = new RangeFloatOpen(start + length, !startDirection, (edges & EdgeInclusion.End) == EdgeInclusion.End);
+			this.start = start;
+			this.end = end;
 		}
 
 		public bool Includes(float value) => start.Includes(value) && end.Includes(value);
 
-
 		public bool Includes(RangeFloat value) => start.Includes(value.start) && end.Includes(value.end);
 
-		public Vector2 MinMaxToVector2() => new Vector2(Min.point.x,  Max.point.x);
+		public Vector2 MinMaxToVector2() => new Vector2(Min.point.x, Max.point.x);
 
 		public Vector2 StartEndToVector2() => new Vector2(start.point.x, end.point.x);
 
