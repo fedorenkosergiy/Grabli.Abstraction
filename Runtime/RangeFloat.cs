@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System;
 using System.Diagnostics;
+using UnityEngine;
 
 namespace Grabli.Abstraction
 {
@@ -33,6 +34,9 @@ namespace Grabli.Abstraction
 
 		public bool Includes(RangeFloat value) => start.Includes(value.start) && end.Includes(value.end);
 
+		public Vector2 MinMaxToVector2() => new Vector2(Min.point.x,  Max.point.x);
+
+		public Vector2 StartEndToVector2() => new Vector2(start.point.x, end.point.x);
 
 		public bool Equals(RangeFloat other) => start.Equals(other.start) && end.Equals(other.end);
 
