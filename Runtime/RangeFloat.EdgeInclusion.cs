@@ -1,6 +1,6 @@
 namespace Grabli.Abstraction
 {
-	public partial struct RangeFloat
+	public partial struct RangeFloatClosed
 	{
 		[System.Flags]
 		public enum EdgeInclusion : byte

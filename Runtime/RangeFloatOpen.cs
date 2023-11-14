@@ -1,74 +1,72 @@
 using System;
-using System.Diagnostics;
 using static UnityEngine.Mathf;
 
 namespace Grabli.Abstraction
 {
 	[Serializable]
-	[DebuggerDisplay("{" + nameof(DebuggerText) + "}")]
 	public struct RangeFloatOpen
 	{
-		public Vector1 point;
-		public bool included;
+		public EdgeFloat start;
+		public bool direction;
 
-		private string DebuggerText
+		public float End => direction ? float.PositiveInfinity : float.NegativeInfinity;
+
+		public RangeFloatOpen(EdgeFloat start, bool direction)
 		{
-			get
-			{
-				if (point.direction) return (included ? "[" : "(") + point.x;
-
-				return point.x + (included ? "]" : ")");
-			}
+			this.start = start;
+			this.direction = direction;
 		}
 
-		public RangeFloatOpen(float x, bool direction, bool included)
-		{
-			point = new Vector1(x, direction);
-			this.included = included;
-		}
+		public RangeFloatOpen(float value, bool included, bool direction) : this(new EdgeFloat(value, included),
+																				 direction) { }
 
 		public bool Includes(float value)
 		{
-			if (Approximately(point.x, value)) return included;
-			if (point.x < value) return point.direction;
+			if (Approximately(start.value, value)) return start.included;
+			if (start.value < value) return direction;
 
-			return !point.direction;
+			return !direction;
 		}
 
 		public bool Includes(RangeFloatOpen value)
 		{
-			if (point.direction != value.point.direction) return false;
+			if (direction != value.direction) return false;
 
-			if (Approximately(point.x, value.point.x)) return included || !value.included;
+			if (Approximately(start.value, value.start.value)) return start.included || !value.start.included;
 
-			if (point.x < value.point.x) return point.direction;
+			if (start.value < value.start.value) return direction;
 
-			return !point.direction;
+			return !direction;
 		}
 
-		public bool Equals(RangeFloatOpen other) => point.Equals(other.point) && included == other.included;
+		public bool Includes(EdgeFloat edge)
+		{
+			return Includes(edge.value) || start.included == edge.included && Approximately(start.value, edge.value);
+		}
+
+		public bool Equals(RangeFloatOpen other) => start.Equals(other.start) && direction == other.direction;
 
 		public override bool Equals(object obj) => obj is RangeFloatOpen other && Equals(other);
 
-		public override int GetHashCode() => HashCode.Combine(point, included);
+		public override int GetHashCode() => HashCode.Combine(start, direction);
 
 		public static bool operator ==(RangeFloatOpen a, RangeFloatOpen b)
 		{
-			return a.point == b.point && a.included == b.included;
+			return a.start == b.start && a.direction == b.direction;
 		}
 
 		public static bool operator !=(RangeFloatOpen a, RangeFloatOpen b) => !(a == b);
 
 		public static RangeFloatOpen operator +(RangeFloatOpen range, float value)
 		{
-			range.point += value;
+			range.start += value;
 
 			return range;
 		}
 
 		public static RangeFloatOpen operator -(RangeFloatOpen range, float value)
 		{
-			range.point -= value;
+			range.start -= value;
 
 			return range;
 		}
