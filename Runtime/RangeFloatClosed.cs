@@ -23,10 +23,10 @@ namespace Grabli.Abstraction
 
 		private RangeFloatOpen EndAsRange => new RangeFloatOpen(end, Length < 0.0f);
 
-		public RangeFloatClosed(Vector2 startAndEnd) : this(startAndEnd, EdgeInclusion.Both) { }
+		public RangeFloatClosed(Vector2 startEnd) : this(startEnd, EdgeInclusion.Both) { }
 
-		public RangeFloatClosed(Vector2 startAndEnd, EdgeInclusion edges) : this(startAndEnd.x,
-																				 startAndEnd.y - startAndEnd.x,
+		public RangeFloatClosed(Vector2 startEnd, EdgeInclusion edges) : this(startEnd.x,
+																				 startEnd.y - startEnd.x,
 																				 edges) { }
 
 		public RangeFloatClosed(float start, float length, EdgeInclusion edges) :
@@ -42,8 +42,17 @@ namespace Grabli.Abstraction
 
 		public bool Includes(float value) => StartAsRange.Includes(value) && EndAsRange.Includes(value);
 
-		public bool Includes(RangeFloatClosed value) =>
-		StartAsRange.Includes(value.start) && EndAsRange.Includes(value.end);
+		public bool Includes(RangeFloatClosed value)
+		{
+			return StartAsRange.Includes(value.start) && EndAsRange.Includes(value.end);
+		}
+
+		public bool Intersects(RangeFloatClosed range)
+		{
+			if (Includes(range)) return true;
+			if (range.Includes(this)) return true;
+			return Includes(range.start.value) || Includes(range.end.value);
+		}
 
 		public Vector2 MinMaxToVector2() => new Vector2(Min.value, Max.value);
 
